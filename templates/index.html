@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Spam Message Detector</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #89f7fe, #66a6ff);
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .container {
+            background: white;
+            padding: 40px 50px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            text-align: center;
+            width: 450px;
+        }
+
+        h1 {
+            color: #333;
+            font-size: 26px;
+            margin-bottom: 20px;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 10px;
+            border: 2px solid #ccc;
+            outline: none;
+            transition: 0.3s;
+            font-size: 15px;
+            margin-bottom: 15px;
+        }
+
+        input[type="text"]:focus {
+            border-color: #66a6ff;
+            box-shadow: 0 0 8px rgba(102,166,255,0.5);
+        }
+
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        button {
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .check-btn {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .check-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .clear-btn {
+            background-color: #f44336;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background-color: #c62828;
+        }
+
+        h2 {
+            margin-top: 20px;
+            font-weight: 600;
+        }
+
+        .spam {
+            color: #ff1744;
+        }
+
+        .not-spam {
+            color: #00c853;
+        }
+
+        footer {
+            margin-top: 15px;
+            font-size: 13px;
+            color: #555;
+        }
+    </style>
+    <script>
+        function clearInput() {
+            document.querySelector('input[name="message"]').value = '';
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>📩 Spam Message Detector</h1>
+        <form action="/predict" method="post">
+            <input type="text" name="message" placeholder="Enter your message" value="{{ request.form.get('message', '') }}" required>
+            <div class="btn-container">
+                <button type="submit" class="check-btn">Check</button>
+                <button type="button" class="clear-btn" onclick="clearInput()">Clear</button>
+            </div>
+        </form>
+
+        {% if prediction %}
+            <h2 class="{{ 'spam' if 'Spam' in prediction else 'not-spam' }}">
+                {{ prediction }}
+            </h2>
+        {% endif %}
+    </div>
+</body>
+</html>
